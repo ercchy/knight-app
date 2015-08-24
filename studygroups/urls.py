@@ -10,5 +10,6 @@ urlpatterns = patterns('',
     url(r'^organize/studygroup/(?P<study_group_id>[\d]+)/message/edit/(?P<message_id>[\d]+)/$', 'studygroups.views.messages_edit', name='studygroups_messages_edit'),
     url(r'^organize/studygroup/(?P<study_group_id>[\d]+)/message/list/$', 'studygroups.views.organize_messages', name='studygroups_organize_messages'),
     url(r'^receive_sms/$', 'studygroups.views.receive_sms', name='studygroups_receive_sms'),
+    url(r'^filter/$', 'studygroups.views.filter_groups', name='stoudygroups_filter'),
 )
 

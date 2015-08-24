@@ -1,0 +1,29 @@
+<div class="article-wrapper bloc" id="{{ lc.course.title|slugify }}">
+	<article>
+		<div class="clearfix">
+			{% if lc.location.image %}
+				<div class="img-wrapper col-md-4">
+					<img src="/media/{{ lc.location.image }}" alt="Cover image of the course" />
+				</div>
+			{% endif %}
+			<div class="course-description {% if lc.location.image %} col-md-8{% else %} col-md-12{% endif %}">
+				<h4>{{ lc.course.title }}</h4>
+
+				<p><strong><i class="fa fa-calendar"></i>&nbsp; &nbsp;{{ lc.day }}s {{ lc.time|time:"fA" }}
+					- {{ lc.end_time|time:"fA" }}</strong></p>
+				<address class="text-left">
+					<a href="{{ lc.location.link }}" target="_blank"><i class="fa fa-map-marker"></i>&nbsp;
+						&nbsp;{{ lc.location.name }}</a>
+				</address>
+				<hr>
+				<p>{{ lc.course.caption }}</p>
+				<strong><p>{{ lc.course.duration|capfirst }} beginning {{ lc.start_date|date:"j N" }}</p></strong>
+
+				<div class="course-provider">This group will be working with the course content from <a
+						href="{{ lc.course.link }}" target="_blank">{{ lc.course.provider }}</a></div>
+				<a href="{% url 'studygroups_signup' location=lc.location.name|slugify study_group_id=lc.pk %}"
+				   class="course-apply btn btn-info"> Sign up </a>
+			</div>
+		</div>
+	</article>
+</div>

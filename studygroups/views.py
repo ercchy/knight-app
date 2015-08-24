@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from django.shortcuts import render, render_to_response
+from django.shortcuts import render, render_to_response, redirect
 from django.template import RequestContext
 from django.template.loader import render_to_string
 from django.core.urlresolvers import reverse
@@ -22,18 +22,39 @@ from studygroups.sms import send_message
 
 def landing(request):
     courses = Course.objects.all().order_by('key')
+    study_groups = StudyGroup.objects.all()
+    locations = set([group.location for group in study_groups])
 
     for course in courses:
         course.studygroups = course.studygroup_set.all()
 
     context = {
         'courses': courses,
-        'learning_circles': StudyGroup.objects.all(),
+        'locations': locations,
+        'learning_circles': study_groups,
         'interest': {
             'courses': courses,
             'locations': Location.objects.all(),
         },
     }
+    return render_to_response('studygroups/index.html', context, context_instance=RequestContext(request))
+
+
+def filter_groups(request):
+
+    location = filter(None, request.GET.getlist('location', None))
+
+    if location:
+        study_groups = StudyGroup.objects.filter(location_id__name__in=location)
+    else:
+        study_groups = StudyGroup.objects.all()
+
+    context = {
+        'learning_circles': study_groups,
+    }
+    if request.is_ajax():
+        return render_to_response('studygroups/ajax-learning-circles.html',
+                                  context, context_instance=RequestContext(request))
     return render_to_response('studygroups/index.html', context, context_instance=RequestContext(request))
 
 
